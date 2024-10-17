@@ -1,0 +1,53 @@
+/* styles/About.css */
+@import 'animate.css';
+
+.about-page {
+  background-color: #f8f9fa;
+}
+
+.hover-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.hover-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.icon-hover {
+  transition: transform 0.3s ease-in-out;
+}
+
+.hover-card:hover .icon-hover {
+  transform: scale(1.2);
+}
+
+.mission-text {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+h1, h2 {
+  color: #333;
+  font-weight: bold;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-title {
+  font-weight: bold;
+  color: #444;
+}
+
+.card-text {
+  color: #666;
+}

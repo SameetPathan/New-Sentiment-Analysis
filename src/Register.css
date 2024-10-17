@@ -1,0 +1,39 @@
+/* Add this to your App.css or create a new Register.css file */
+.register-page {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .register-form {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .register-form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .register-form .form-control {
+    border-radius: 20px;
+  }
+  
+  .register-form .btn-primary {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  .register-form .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
