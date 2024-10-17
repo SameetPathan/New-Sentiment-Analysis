@@ -1,4 +1,4 @@
-/* styles/Login.css */
+/* Login.css */
 .login-container {
   display: flex;
   justify-content: center;
@@ -8,21 +8,21 @@
 }
 
 .login-form-wrapper {
-  background-color: white;
+  background-color: #ffffff;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
 }
 
 .login-form {
-  margin-bottom: 1rem;
+  margin-top: 1.5rem;
 }
 
 .login-form .form-control:focus {
   box-shadow: none;
-  border-color: #80bdff;
+  border-color: #007bff;
 }
 
 .login-form .btn-primary {
@@ -49,15 +49,6 @@
   border-left: none;
 }
 
-.login-form .btn-outline-secondary:focus {
-  box-shadow: none;
-}
-
-.login-form a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.login-form a:hover {
-  text-decoration: underline;
+.login-form .btn-outline-secondary:hover {
+  background-color: #f8f9fa;
 }

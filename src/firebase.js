@@ -28,7 +28,6 @@ export function register(registerData) {
       password: registerData.password,
       confirmPassword: registerData.confirmPassword,
       userType: registerData.userType,
-      collegeName: registerData.collegeName,
       secretKey:registerData.secretKey
     });
     return true;

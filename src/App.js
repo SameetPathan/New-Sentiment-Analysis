@@ -11,6 +11,7 @@ import Login from './components/Login';
 import PostNews from './components/PostNews';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import ViewNews from './components/ViewNews';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/post-news" element={<PostNews />} />
+          <Route path="/view-news" element={<ViewNews></ViewNews>} />
         </Routes>
         <footer className="bg-dark text-light py-4">
         <Container>

@@ -97,11 +97,11 @@ function Contact() {
                     <ul className="list-unstyled">
                       <li className="mb-3">
                         <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2 text-primary" />
-                        123 Main St, Anytown, USA 12345
+                        Pune - 412101
                       </li>
                       <li className="mb-3">
                         <FontAwesomeIcon icon={faPhone} className="me-2 text-primary" />
-                        +1 (555) 123-4567
+                        +91 7863673638
                       </li>
                       <li className="mb-3">
                         <FontAwesomeIcon icon={faEnvelope} className="me-2 text-primary" />

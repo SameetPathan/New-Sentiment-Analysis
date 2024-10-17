@@ -34,6 +34,9 @@ function Navigation() {
             <Nav.Link as={Link} to="/contact" className="mx-2">
               <FontAwesomeIcon icon={faEnvelope} className="mr-1" /> Contact
             </Nav.Link>
+            <Nav.Link as={Link} to="/view-news" className="mx-2">
+                  <FontAwesomeIcon icon={faList} className="mr-1" /> News List
+                </Nav.Link>
             {isLoggedIn ? (
               <>
                 <Nav.Link as={Link} to="/post-news" className="mx-2">
