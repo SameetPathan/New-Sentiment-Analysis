@@ -9,7 +9,6 @@ import Contact from './components/Contact';
 import Register from './components/Register';
 import Login from './components/Login';
 import PostNews from './components/PostNews';
-import NewsList from './components/NewsList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -25,7 +24,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/post-news" element={<PostNews />} />
-          <Route path="/news-list" element={<NewsList />} />
         </Routes>
         <footer className="bg-dark text-light py-4">
         <Container>

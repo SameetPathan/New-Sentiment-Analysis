@@ -23,7 +23,7 @@ function Login() {
     try {
       const user = await login(email, password);
       if (user) {
-        navigate('/');
+        navigate('/post-news');
       }
     } catch (err) {
       setError('Invalid email or password. Please try again.');
