@@ -110,7 +110,7 @@ function Navigation() {
                 {user.userType === 'admin' && (
                   <Nav.Link 
                     as={Link} 
-                    to="/all-posts"
+                    to="/view-news"
                     className={`nav-item ${location.pathname === '/all-posts' ? 'active' : ''}`}
                   >
                     <FontAwesomeIcon icon={faUsers} className="nav-icon" />
