@@ -1,14 +1,35 @@
-// components/Navigation.js
-import React from 'react';
+// Navigation.js
+import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faNewspaper, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faNewspaper, 
+  faSignOutAlt, 
+  faHome, 
+  faInfoCircle, 
+  faList, 
+  faPlus, 
+  faUser,
+  faUsers
+} from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from './AuthContext';
+import '../Navigation.css';
 
 function Navigation() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -16,61 +37,115 @@ function Navigation() {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow">
+    <Navbar 
+      bg="light" 
+      variant="light" 
+      expand="lg" 
+      fixed="top" 
+      className={`custom-navbar ${scrolled ? 'navbar-scrolled' : ''}`}
+    >
       <Container>
-        {/* Brand on the left */}
-        <Navbar.Brand as={Link} to="/" className="me-auto">
-          <FontAwesomeIcon icon={faNewspaper} className="me-2" />
-          Sentiment Analysis
+        {/* Brand Logo and Name */}
+        <Navbar.Brand as={Link} to="/" className="brand-container">
+          <div className="logo-wrapper">
+            <FontAwesomeIcon icon={faNewspaper} className="brand-icon" />
+          </div>
+          <span className="brand-text">Sentiment Analysis</span>
         </Navbar.Brand>
 
-        {/* Toggle button for mobile */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-        {/* Navigation items on the right */}
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Nav>
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto nav-links">
             {!user && (
               <>
-                <Nav.Link as={Link} to="/" className="mx-2">
-                  Home
+                <Nav.Link 
+                  as={Link} 
+                  to="/" 
+                  className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
+                >
+                  <FontAwesomeIcon icon={faHome} className="nav-icon" />
+                  &nbsp; <span>Home</span>
                 </Nav.Link>
-                <Nav.Link as={Link} to="/about" className="mx-2">
-                  About
+                <Nav.Link 
+                  as={Link} 
+                  to="/about"
+                  className={`nav-item ${location.pathname === '/about' ? 'active' : ''}`}
+                >
+                  <FontAwesomeIcon icon={faInfoCircle} className="nav-icon" />
+                  &nbsp; <span>About</span>
                 </Nav.Link>
               </>
             )}
             
-            <Nav.Link as={Link} to="/view-news" className="mx-2">
-              News List
+            <Nav.Link 
+              as={Link} 
+              to="/view-news"
+              className={`nav-item ${location.pathname === '/view-news' ? 'active' : ''}`}
+            >
+              <FontAwesomeIcon icon={faList} className="nav-icon" />
+              &nbsp;<span>Articles</span>
             </Nav.Link>
 
             {user ? (
               <>
-                <Nav.Link as={Link} to="/post-news" className="mx-2">
-                  Post News
+                <Nav.Link 
+                  as={Link} 
+                  to="/post-news"
+                  className={`nav-item ${location.pathname === '/post-news' ? 'active' : ''}`}
+                >
+                  <FontAwesomeIcon icon={faPlus} className="nav-icon" />
+                  &nbsp;  <span>Post News</span>
                 </Nav.Link>
-                <Nav.Link as={Link} to={`/my-posts/${user.userId}`} className="mx-2">
-                  My Posts
+                
+                <Nav.Link 
+                  as={Link} 
+                  to={`/my-posts/${user.userId}`}
+                  className={`nav-item ${location.pathname.includes('/my-posts') ? 'active' : ''}`}
+                >
+                  <FontAwesomeIcon icon={faUser} className="nav-icon" />
+                  &nbsp;    <span>My Posts</span>
                 </Nav.Link>
+
                 {user.userType === 'admin' && (
-                  <Nav.Link as={Link} to="/all-posts" className="mx-2">
-                    All Posts
+                  <Nav.Link 
+                    as={Link} 
+                    to="/all-posts"
+                    className={`nav-item ${location.pathname === '/all-posts' ? 'active' : ''}`}
+                  >
+                    <FontAwesomeIcon icon={faUsers} className="nav-icon" />
+                    &nbsp;    <span>All Posts</span>
                   </Nav.Link>
                 )}
-                <Button variant="outline-light" onClick={handleLogout} className="ms-2">
-                  <FontAwesomeIcon icon={faSignOutAlt} className="me-1" /> Logout
+
+                <Button 
+                  variant="primary" 
+                  onClick={handleLogout} 
+                  className="logout-btn"
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} className="nav-icon" />
+                  &nbsp;    <span>Logout</span>
                 </Button>
               </>
             ) : (
-              <>
-                <Nav.Link as={Link} to="/register" className="mx-2">
+              <div className="auth-buttons">
+                <Button 
+                  as={Link} 
+                  to="/register" 
+                  variant="outline-primary" 
+                  className="register-btn"
+                >
                   Register
-                </Nav.Link>
-                <Nav.Link as={Link} to="/login" className="mx-2">
+                </Button>
+                <Button 
+                  as={Link} 
+                  to="/login" 
+                  variant="primary" 
+                  className="login-btn"
+                >
                   Login
-                </Nav.Link>
-              </>
+                </Button>
+              </div>
             )}
           </Nav>
         </Navbar.Collapse>

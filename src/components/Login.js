@@ -1,12 +1,21 @@
-// pages/Login.js
+// Login.js
 import React, { useState } from 'react';
-import { Container, Form, Button, Alert, InputGroup } from 'react-bootstrap';
+import { Container, Form, Button, Alert, InputGroup, Row, Col, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignInAlt, faEnvelope, faLock, faEye, faEyeSlash, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faSignInAlt, 
+  faEnvelope, 
+  faLock, 
+  faEye, 
+  faEyeSlash, 
+  faUserCircle,
+  faNewspaper,
+  faUserPlus
+} from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { getDatabase, ref, get } from 'firebase/database';
-import '../Login.css';
 import { useAuth } from './AuthContext';
+import '../Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -38,7 +47,6 @@ function Login() {
             userData.userType === userType
           ) {
             userFound = true;
-            // Store user data in context and cookies
             login({
               email: userData.email,
               userType: userData.userType,
@@ -63,82 +71,120 @@ function Login() {
   };
 
   return (
-    <Container className="login-container">
-      <div className="login-form-wrapper">
-        <h2 className="text-center mb-4">Welcome to News Sentiment Analysis</h2>
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Form onSubmit={handleSubmit} className="login-form">
-          <Form.Group controlId="formEmail" className="mb-3">
-            <InputGroup>
-              <InputGroup.Text>
-                <FontAwesomeIcon icon={faEnvelope} />
-              </InputGroup.Text>
-              <Form.Control 
-                type="email" 
-                placeholder="Enter your email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </InputGroup>
-          </Form.Group>
+    <div className="login-page">
+      <Container>
+        <Row className="justify-content-center align-items-center min-vh-100">
+          <Col md={9} lg={7} xl={6}>
+            <Card className="login-card">
+              <Row className="g-0">
+                {/* Left side - Login Form */}
+                <Col md={7}>
+                  <Card.Body className="login-form-container">
+                    <div className="text-center mb-4">
+                      <h3 className="welcome-text">Welcome Back!</h3>
+                      <p className="text-muted">Please login to your account</p>
+                    </div>
 
-          <Form.Group controlId="formPassword" className="mb-3">
-            <InputGroup>
-              <InputGroup.Text>
-                <FontAwesomeIcon icon={faLock} />
-              </InputGroup.Text>
-              <Form.Control 
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <Button 
-                variant="outline-secondary"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-              </Button>
-            </InputGroup>
-          </Form.Group>
+                    {error && (
+                      <Alert variant="danger" className="animated fadeIn">
+                        {error}
+                      </Alert>
+                    )}
 
-          <Form.Group controlId="formUserType" className="mb-3">
-            <InputGroup>
-              <InputGroup.Text>
-                <FontAwesomeIcon icon={faUserCircle} />
-              </InputGroup.Text>
-              <Form.Control 
-                as="select" 
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-              >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </Form.Control>
-            </InputGroup>
-          </Form.Group>
+                    <Form onSubmit={handleSubmit}>
+                      <Form.Group className="form-floating mb-3">
+                        <Form.Control
+                          type="email"
+                          placeholder="Email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="custom-input"
+                        />
+                        <label>
+                          <FontAwesomeIcon icon={faEnvelope} className="me-2" />
+                          Email address
+                        </label>
+                      </Form.Group>
 
-          <Button 
-            variant="primary" 
-            type="submit" 
-            className="w-100 mb-3" 
-            disabled={loading}
-          >
-            {loading ? 'Logging in...' : (
-              <>
-                <FontAwesomeIcon icon={faSignInAlt} className="mr-2" /> Login
-              </>
-            )}
-          </Button>
-        </Form>
-     
-        <div className="text-center mt-3">
-          Don't have an account? <a href="/register">Sign up</a>
-        </div>
-      </div>
-    </Container>
+                      <Form.Group className="form-floating mb-3">
+                        <Form.Control
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          className="custom-input"
+                        />
+                        <label>
+                          <FontAwesomeIcon icon={faLock} className="me-2" />
+                          Password
+                        </label>
+                        <Button
+                          variant="link"
+                          className="password-toggle"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                        </Button>
+                      </Form.Group>
+
+                      <Form.Group className="form-floating mb-4">
+                        <Form.Select
+                          value={userType}
+                          onChange={(e) => setUserType(e.target.value)}
+                          className="custom-input"
+                        >
+                          <option value="user">User</option>
+                          <option value="admin">Admin</option>
+                        </Form.Select>
+                        <label>
+                          <FontAwesomeIcon icon={faUserCircle} className="me-2" />
+                          User Type
+                        </label>
+                      </Form.Group>
+
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        className="login-btn w-100"
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <span className="spinner-border spinner-border-sm me-2" />
+                        ) : (
+                          <FontAwesomeIcon icon={faSignInAlt} className="me-2" />
+                        )}
+                        {loading ? 'Logging in...' : 'Login'}
+                      </Button>
+
+                      <div className="text-center mt-4">
+                        <span className="text-muted">Don't have an account? </span>
+                        <a href="/register" className="register-link">
+                          <FontAwesomeIcon icon={faUserPlus} className="me-1" />
+                          Sign up
+                        </a>
+                      </div>
+                    </Form>
+                  </Card.Body>
+                </Col>
+
+                {/* Right side - Banner */}
+                <Col md={5} className="d-none d-md-block">
+                  <div className="login-banner">
+                    <div className="banner-content">
+                      <FontAwesomeIcon icon={faNewspaper} className="banner-icon" />
+                      <h2>News Sentiment Analysis</h2>
+                      <p>Discover insights through AI-powered news analysis</p>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 

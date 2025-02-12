@@ -1,50 +1,190 @@
-/* pages/PostNews.css */
+/* PostNews.css */
 .post-news-page {
-    padding: 2rem 0;
-  }
-  
-  .post-news-page .card {
-    border-radius: 15px;
-    border: none;
-  }
-  
-  .post-news-page h1 {
-    color: #333;
-    font-weight: bold;
-  }
-  
-  .post-news-page .form-label {
-    font-weight: 600;
-    color: #555;
-  }
-  
-  .post-news-page .form-control-lg {
-    border-radius: 10px;
-    border: 1px solid #ced4da;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-  
-  .post-news-page .form-control-lg:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-  
-  .post-news-page .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    font-weight: bold;
-    transition: all 0.3s ease;
-  }
-  
-  .post-news-page .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-    transform: translateY(-2px);
-  }
-  
-  .post-news-page .alert {
-    border-radius: 10px;
-  }
-  
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem 0;
+}
 
-  
+.post-news-card {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+/* Header Styling */
+.post-header {
+  background: linear-gradient(135deg, #007bff 0%, #00bcd4 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  font-size: 2rem;
+}
+
+.post-header h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Form Section */
+.form-section {
+  padding: 1rem;
+}
+
+/* Floating Form Groups */
+.floating-form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 1.1rem;
+  color: #6c757d;
+  z-index: 2;
+}
+
+.custom-input {
+  height: 3.5rem;
+  padding: 1rem 1rem 1rem 2.8rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.custom-textarea {
+  height: auto;
+  min-height: 150px;
+}
+
+.custom-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+}
+
+.floating-form-group label {
+  position: absolute;
+  left: 2.8rem;
+  top: 1rem;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  margin: 0;
+}
+
+.custom-input:focus ~ label,
+.custom-input:not(:placeholder-shown) ~ label {
+  transform: translateY(-1.4rem) scale(0.85);
+  background-color: white;
+  padding: 0 0.5rem;
+  color: #007bff;
+  left: 0.8rem;
+}
+
+/* Image Upload Styling */
+.image-upload-container {
+  background: #f8f9fa;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.upload-area {
+  padding: 2rem;
+  text-align: center;
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+  border-color: #007bff;
+  background: rgba(0, 123, 255, 0.05);
+}
+
+.upload-icon {
+  font-size: 2rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-preview {
+  padding: 1rem;
+  text-align: center;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Submit Section */
+.submit-section {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+  margin-top: 2rem;
+}
+
+.submit-button {
+  padding: 1rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #007bff 0%, #00bcd4 100%);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.submit-button:disabled {
+  background: linear-gradient(135deg, #ccc 0%, #999 100%);
+}
+
+/* Alert Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}
+
+/* Responsive Design */
+@media (max-width

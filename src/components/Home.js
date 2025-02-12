@@ -1,89 +1,103 @@
-// pages/Home.js
+// Home.js
 import React from 'react';
-import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine, faNewspaper, faUsers, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { faTwitter, faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Carousel
+} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Home.css';
 
 function Home() {
   return (
-    <div className="home">
-      <Carousel className="full-screen-carousel">
+    <div className="home-page">
+      {/* Hero Carousel */}
+      <Carousel fade className="custom-carousel">
         <Carousel.Item>
           <img
-            className="d-block w-100"
+            className="d-block w-100 carousel-img"
             src="bg1.png"
-            alt="Latest News"
+            alt="First slide"
           />
-          <Carousel.Caption className="text-overlay">
-            <h1 className="display-4">Stay Updated</h1>
-            <p className="lead">Get the latest news with sentiment analysis.</p>
+          <Carousel.Caption className="carousel-content">
+            <h1 className="display-3 fw-bold">Stay Updated</h1>
+            <p className="lead mb-4">Get the latest news with sentiment analysis</p>
+           
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
           <img
-            className="d-block w-100"
+            className="d-block w-100 carousel-img"
             src="bg2.jpg"
-            alt="Sentiment Trends"
+            alt="Second slide"
           />
-          <Carousel.Caption className="text-overlay">
-            <h1 className="display-4">Track Sentiment Trends</h1>
-            <p className="lead">Visualize sentiment changes over time.</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className="d-block w-100"
-            src="bg3.jpg"
-            alt="Community Insights"
-          />
-          <Carousel.Caption className="text-overlay">
-            <h1 className="display-4">Community Insights</h1>
-            <p className="lead">Engage with other users and share perspectives.</p>
+          <Carousel.Caption className="carousel-content">
+            <h1 className="display-3 fw-bold">Track Sentiment</h1>
+            <p className="lead mb-4">Analyze trends and patterns in real-time</p>
+            
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>
 
-      <Container className="my-5">
-        <Row>
-          <Col md={4}>
-            <Card className="mb-4 shadow-sm text-center">
-              <Card.Body>
-                <FontAwesomeIcon icon={faChartLine} size="3x" className="mb-3 text-primary" />
-                <Card.Title>Sentiment Analysis</Card.Title>
-                <Card.Text>
-                  Leverage MI to understand the emotional tone of news articles.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="mb-4 shadow-sm text-center">
-              <Card.Body>
-                <FontAwesomeIcon icon={faNewspaper} size="3x" className="mb-3 text-success" />
-                <Card.Title>News Aggregation</Card.Title>
-                <Card.Text>
-                  Access news from various sources in one convenient platform.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="mb-4 shadow-sm text-center">
-              <Card.Body>
-                <FontAwesomeIcon icon={faUsers} size="3x" className="mb-3 text-info" />
-                <Card.Title>User Collaboration</Card.Title>
-                <Card.Text>
-                  Contribute by posting, editing, and reporting news articles.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+      {/* Features Section */}
+      <section className="features-section py-5">
+        <Container>
+          <h2 className="text-center mb-5 display-4">Our Features</h2>
+          <Row className="g-4">
+            <Col md={4}>
+              <Card className="h-100 feature-card">
+                <Card.Body className="text-center p-4">
+                  <div className="feature-icon mb-3">
+                    <i className="bi bi-graph-up text-primary"></i>
+                  </div>
+                  <Card.Title className="h4 mb-3">Sentiment Analysis</Card.Title>
+                  <Card.Text>
+                    Leverage advanced AI to understand the emotional context of news articles
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="h-100 feature-card">
+                <Card.Body className="text-center p-4">
+                  <div className="feature-icon mb-3">
+                    <i className="bi bi-newspaper text-success"></i>
+                  </div>
+                  <Card.Title className="h4 mb-3">News Aggregation</Card.Title>
+                  <Card.Text>
+                    Access curated news from multiple trusted sources in one place
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="h-100 feature-card">
+                <Card.Body className="text-center p-4">
+                  <div className="feature-icon mb-3">
+                    <i className="bi bi-people text-info"></i>
+                  </div>
+                  <Card.Title className="h4 mb-3">Community Insights</Card.Title>
+                  <Card.Text>
+                    Connect with others and share valuable perspectives
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </section>
 
-      
+      {/* CTA Section */}
+      <section className="cta-section text-center py-5 bg-primary text-white">
+        <Container>
+          <h2 className="display-4 mb-4">Ready to Get Started?</h2>
+          <p className="lead mb-4">Join thousands of users analyzing news sentiment</p>
+         
+        </Container>
+      </section>
     </div>
   );
 }

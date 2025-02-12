@@ -1,58 +1,131 @@
-// pages/About.js
+// About.js
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faNewspaper, faChartLine, faUsers } from '@fortawesome/free-solid-svg-icons';
-import '../About.css'; // Make sure to create this CSS file
+import { 
+  faNewspaper, 
+  faChartLine, 
+  faUsers, 
+  faGlobe,
+  faRobot,
+  faLightbulb,
+  faChartBar
+} from '@fortawesome/free-solid-svg-icons';
+import '../About.css';
 
 function About() {
   return (
-    <Container className="about-page py-5">
-      <h1 className="text-center mb-5 animate__animated animate__fadeIn">About News Sentiment Analysis</h1>
-      <Row className="justify-content-center">
-        <Col md={4} className="mb-4">
-          <Card className="h-100 shadow-lg text-center hover-card animate__animated animate__fadeInLeft">
-            <Card.Body className="d-flex flex-column justify-content-center">
-              <FontAwesomeIcon icon={faNewspaper} size="3x" className="mb-4 text-primary icon-hover" />
-              <Card.Title className="mb-3">News Aggregation</Card.Title>
-              <Card.Text>
-                We collect news from various sources to provide a comprehensive view of current events.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4} className="mb-4">
-          <Card className="h-100 shadow-lg text-center hover-card animate__animated animate__fadeInUp">
-            <Card.Body className="d-flex flex-column justify-content-center">
-              <FontAwesomeIcon icon={faChartLine} size="3x" className="mb-4 text-success icon-hover" />
-              <Card.Title className="mb-3">Sentiment Analysis</Card.Title>
-              <Card.Text>
-                Our advanced ML algorithms analyze the sentiment of news articles to provide insights.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4} className="mb-4">
-          <Card className="h-100 shadow-lg text-center hover-card animate__animated animate__fadeInRight">
-            <Card.Body className="d-flex flex-column justify-content-center">
-              <FontAwesomeIcon icon={faUsers} size="3x" className="mb-4 text-info icon-hover" />
-              <Card.Title className="mb-3">User Collaboration</Card.Title>
-              <Card.Text>
-                Users can contribute by posting, editing, and reporting news articles.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <div className="mt-5 text-center animate__animated animate__fadeIn">
-        <h2 className="mb-4">Our Mission</h2>
-        <p className="lead mission-text">
-          Our mission is to provide a platform where users can access and analyze news from various sources,
-          contributing to a more informed and discerning readership. We leverage cutting-edge sentiment
-          analysis technology to offer insights into the emotional tone of news articles.
-        </p>
+    <div className="about-page">
+      {/* Hero Section */}
+      <div className="hero-section text-center">
+        <Container>
+          <h1 className="display-4 fw-bold text-gradient">About News Sentiment Analysis</h1>
+          <p className="lead hero-subtitle">
+            Transforming how we understand and interact with news through AI-powered sentiment analysis
+          </p>
+        </Container>
       </div>
-    </Container>
+
+      {/* Features Section */}
+      <section className="features-section">
+        <Container>
+          <Row className="justify-content-center g-4">
+            <Col md={4}>
+              <Card className="feature-card">
+                <Card.Body>
+                  <div className="icon-wrapper blue">
+                    <FontAwesomeIcon icon={faNewspaper} className="feature-icon" />
+                  </div>
+                  <Card.Title className="mt-4">News Aggregation</Card.Title>
+                  <Card.Text>
+                    We collect and curate news from diverse sources to provide a comprehensive view of current events, ensuring you never miss important updates.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="feature-card">
+                <Card.Body>
+                  <div className="icon-wrapper green">
+                    <FontAwesomeIcon icon={faChartLine} className="feature-icon" />
+                  </div>
+                  <Card.Title className="mt-4">Sentiment Analysis</Card.Title>
+                  <Card.Text>
+                    Our state-of-the-art ML algorithms analyze the emotional tone of news articles, providing valuable insights into media coverage.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="feature-card">
+                <Card.Body>
+                  <div className="icon-wrapper purple">
+                    <FontAwesomeIcon icon={faUsers} className="feature-icon" />
+                  </div>
+                  <Card.Title className="mt-4">User Collaboration</Card.Title>
+                  <Card.Text>
+                    Join our community to contribute, share perspectives, and engage with news in a meaningful way through collaborative features.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+
+      {/* Mission Section */}
+      <section className="mission-section">
+        <Container>
+          <Row className="align-items-center">
+            <Col lg={6} className="mission-content">
+              <h2 className="section-title">Our Mission</h2>
+              <p className="mission-text">
+                We're dedicated to revolutionizing how people consume and understand news through advanced sentiment analysis technology. Our platform empowers readers to:
+              </p>
+              <ul className="mission-list">
+                <li>
+                  <FontAwesomeIcon icon={faGlobe} className="list-icon" />
+                  Access diverse perspectives from global news sources
+                </li>
+                <li>
+                  <FontAwesomeIcon icon={faRobot} className="list-icon" />
+                  Leverage AI-powered sentiment analysis for deeper insights
+                </li>
+                <li>
+                  <FontAwesomeIcon icon={faLightbulb} className="list-icon" />
+                  Make informed decisions based on comprehensive analysis
+                </li>
+              </ul>
+            </Col>
+            <Col lg={6}>
+              <div className="stats-container">
+                <div className="stat-card">
+                  <FontAwesomeIcon icon={faChartBar} className="stat-icon" />
+                  <div className="stat-content">
+                    <h3>99.9%</h3>
+                    <p>Analysis Accuracy</p>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <FontAwesomeIcon icon={faNewspaper} className="stat-icon" />
+                  <div className="stat-content">
+                    <h3>10K+</h3>
+                    <p>Articles Analyzed Daily</p>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <FontAwesomeIcon icon={faUsers} className="stat-icon" />
+                  <div className="stat-content">
+                    <h3>50K+</h3>
+                    <p>Active Users</p>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+    </div>
   );
 }
 

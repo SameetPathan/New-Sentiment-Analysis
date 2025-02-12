@@ -1,8 +1,17 @@
-// pages/Register.js
+// Register.js
 import React, { useState } from 'react';
 import { Form, Button, Alert, Card, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUser, faPhone, faEnvelope, faLock, faNewspaper, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faUserPlus, 
+  faUser, 
+  faPhone, 
+  faEnvelope, 
+  faLock, 
+  faNewspaper, 
+  faUserShield,
+  faSignInAlt
+} from '@fortawesome/free-solid-svg-icons';
 import { register } from '../firebase';
 import '../Register.css';
 
@@ -28,7 +37,7 @@ function Register() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
@@ -43,8 +52,8 @@ function Register() {
       return;
     }
 
-    const result = register(formData);
-    if (result) {
+    try {
+      await register(formData);
       setSuccess(true);
       setFormData({
         name: '',
@@ -55,80 +64,164 @@ function Register() {
         userType: 'user',
         secretKey: '',
       });
-    } else {
+    } catch (error) {
       setError('Registration failed. Please try again.');
     }
   };
 
   return (
-      <Row className="justify-content-center mt-5">
-        <Col md={8} lg={6} xl={5}>
-          <Card className="shadow-lg border-0 rounded-lg">
-            <Card.Header className="bg-primary text-white text-center py-4">
-              <h2><FontAwesomeIcon icon={faNewspaper} className="me-2" />News Sentiment Analysis</h2>
-              <p className="mb-0">Create your account</p>
-            </Card.Header>
-            <Card.Body className="p-5">
-              {error && <Alert variant="danger">{error}</Alert>}
-              {success && <Alert variant="success">Registration successful! Please log in.</Alert>}
-              <Form onSubmit={handleSubmit} className="register-form">
-                <Form.Group controlId="formName" className="mb-3">
-                  <Form.Label><FontAwesomeIcon icon={faUser} className="me-2" />Name</Form.Label>
-                  <Form.Control type="text" placeholder="Enter your name" name="name" value={formData.name} onChange={handleChange} required />
-                </Form.Group>
+    <Container fluid className="register-container">
+      <Row className="justify-content-center align-items-center min-vh-100">
+        <Col md={10} lg={8} xl={7}>
+          <Card className="register-card">
+            <Row className="g-0">
+              {/* Left Column - Image and Welcome Text */}
+              <Col md={5} className="register-banner">
+                <div className="banner-content">
+                  <FontAwesomeIcon icon={faNewspaper} className="banner-icon" />
+                  <h2>Welcome to News Sentiment Analysis</h2>
+                  <p>Join our community and discover insights through AI-powered news analysis</p>
+                </div>
+              </Col>
 
-                <Form.Group controlId="formPhoneNumber" className="mb-3">
-                  <Form.Label><FontAwesomeIcon icon={faPhone} className="me-2" />Phone Number</Form.Label>
-                  <Form.Control type="tel" placeholder="Enter your phone number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
-                </Form.Group>
+              {/* Right Column - Registration Form */}
+              <Col md={7}>
+                <Card.Body className="form-section">
+                  <h3 className="text-center mb-4">Create Account</h3>
+                  
+                  {error && <Alert variant="danger" className="animated fadeIn">{error}</Alert>}
+                  {success && <Alert variant="success" className="animated fadeIn">Registration successful! Please log in.</Alert>}
+                  
+                  <Form onSubmit={handleSubmit}>
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="form-floating mb-3">
+                          <Form.Control
+                            type="text"
+                            placeholder="Name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            className="custom-input"
+                          />
+                          <label><FontAwesomeIcon icon={faUser} className="me-2" />Name</label>
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group className="form-floating mb-3">
+                          <Form.Control
+                            type="tel"
+                            placeholder="Phone Number"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            required
+                            className="custom-input"
+                          />
+                          <label><FontAwesomeIcon icon={faPhone} className="me-2" />Phone Number</label>
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                <Form.Group controlId="formEmail" className="mb-3">
-                  <Form.Label><FontAwesomeIcon icon={faEnvelope} className="me-2" />Email address</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email" name="email" value={formData.email} onChange={handleChange} required />
-                </Form.Group>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group controlId="formPassword" className="mb-3">
-                      <Form.Label><FontAwesomeIcon icon={faLock} className="me-2" />Password</Form.Label>
-                      <Form.Control type="password" placeholder="Password" name="password" value={formData.password} onChange={handleChange} required />
+                    <Form.Group className="form-floating mb-3">
+                      <Form.Control
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="custom-input"
+                      />
+                      <label><FontAwesomeIcon icon={faEnvelope} className="me-2" />Email address</label>
                     </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group controlId="formConfirmPassword" className="mb-3">
-                      <Form.Label><FontAwesomeIcon icon={faLock} className="me-2" />Confirm Password</Form.Label>
-                      <Form.Control type="password" placeholder="Confirm password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
-                    </Form.Group>
-                  </Col>
-                </Row>
 
-                <Form.Group controlId="formUserType" className="mb-3">
-                  <Form.Label><FontAwesomeIcon icon={faUserShield} className="me-2" />User Type</Form.Label>
-                  <Form.Control as="select" name="userType" value={formData.userType} onChange={handleChange}>
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </Form.Control>
-                </Form.Group>
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="form-floating mb-3">
+                          <Form.Control
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            className="custom-input"
+                          />
+                          <label><FontAwesomeIcon icon={faLock} className="me-2" />Password</label>
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group className="form-floating mb-3">
+                          <Form.Control
+                            type="password"
+                            placeholder="Confirm Password"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                            className="custom-input"
+                          />
+                          <label><FontAwesomeIcon icon={faLock} className="me-2" />Confirm</label>
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                {formData.userType === 'admin' && (
-                  <Form.Group controlId="formSecretKey" className="mb-3">
-                    <Form.Label><FontAwesomeIcon icon={faLock} className="me-2" />Admin Secret Key</Form.Label>
-                    <Form.Control type="password" placeholder="Enter admin secret key" name="secretKey" value={formData.secretKey} onChange={handleChange} />
-                  </Form.Group>
-                )}
+                    <Row>
+                      <Col md={formData.userType === 'admin' ? 6 : 12}>
+                        <Form.Group className="form-floating mb-3">
+                          <Form.Select
+                            name="userType"
+                            value={formData.userType}
+                            onChange={handleChange}
+                            className="custom-input"
+                          >
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                          </Form.Select>
+                          <label><FontAwesomeIcon icon={faUserShield} className="me-2" />User Type</label>
+                        </Form.Group>
+                      </Col>
+                      
+                      {formData.userType === 'admin' && (
+                        <Col md={6}>
+                          <Form.Group className="form-floating mb-3">
+                            <Form.Control
+                              type="password"
+                              placeholder="Admin Secret Key"
+                              name="secretKey"
+                              value={formData.secretKey}
+                              onChange={handleChange}
+                              className="custom-input"
+                            />
+                            <label><FontAwesomeIcon icon={faLock} className="me-2" />Secret Key</label>
+                          </Form.Group>
+                        </Col>
+                      )}
+                    </Row>
 
-                <Button variant="primary" type="submit" className="w-100 mt-4">
-                  <FontAwesomeIcon icon={faUserPlus} className="me-2" /> Register
-                </Button>
-              </Form>
-            </Card.Body>
-            <Card.Footer className="text-center py-3">
-              <p className="mb-0">Already have an account? <a href="/login" className="text-primary">Log In</a></p>
-            </Card.Footer>
+                    <Button variant="primary" type="submit" className="w-100 mt-3 register-btn">
+                      <FontAwesomeIcon icon={faUserPlus} className="me-2" />Register
+                    </Button>
+
+                    <div className="text-center mt-4">
+                      <p className="mb-0">
+                        Already have an account?{' '}
+                        <a href="/login" className="login-link">
+                          <FontAwesomeIcon icon={faSignInAlt} className="me-1" />
+                          Log In
+                        </a>
+                      </p>
+                    </div>
+                  </Form>
+                </Card.Body>
+              </Col>
+            </Row>
           </Card>
         </Col>
       </Row>
-
+    </Container>
   );
 }
 

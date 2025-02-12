@@ -1,53 +1,381 @@
-/* styles/MyPosts.css */
-.card {
-    transition: transform 0.2s;
+/* MyPosts.css */
+.my-posts-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem 0;
+}
+
+/* Header Styling */
+.page-header {
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  font-size: 2rem;
+  color: #007bff;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+}
+
+/* Empty State */
+.empty-state-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #dee2e6;
+  margin-bottom: 1.5rem;
+}
+
+/* Post Cards */
+.post-card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.post-image-container {
+  height: 200px;
+  overflow: hidden;
+}
+
+.post-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.post-card:hover .post-image {
+  transform: scale(1.05);
+}
+
+.post-category {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: rgba(0, 123, 255, 0.1);
+  color: #007bff;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.category-icon {
+  margin-right: 0.5rem;
+}
+
+.post-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2d3436;
+}
+
+.post-date {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.post-description {
+  color: #4a4a4a;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-source {
+  margin-bottom: 1rem;
+}
+
+.post-source a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.tag-badge {
+  background: #e9ecef;
+  color: #495057;
+  font-weight: normal;
+  padding: 0.4rem 0.8rem;
+  border-radius: 15px;
+}
+
+.tags-icon {
+  color: #6c757d;
+  margin-right: 0.5rem;
+}
+
+.post-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.action-button {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Continuing MyPosts.css */
+
+.edit-button:hover {
+  background: rgba(0, 123, 255, 0.1);
+  color: #007bff;
+}
+
+.delete-button:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+/* Modal Styling */
+.custom-modal .modal-content {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.custom-modal .modal-header {
+  background: linear-gradient(135deg, #007bff 0%, #00bcd4 100%);
+  color: white;
+  padding: 1.5rem;
+  border-bottom: none;
+}
+
+.custom-modal .modal-title {
+  font-weight: 600;
+}
+
+.custom-modal .modal-header .close {
+  color: white;
+}
+
+.custom-modal .modal-body {
+  padding: 2rem;
+}
+
+.custom-modal .modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 1.5rem;
+}
+
+/* Form Styling */
+.form-section {
+  margin-bottom: 1.5rem;
+}
+
+.floating-form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.custom-input {
+  height: 3.5rem;
+  padding: 1rem 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.custom-textarea {
+  height: auto;
+  min-height: 150px;
+}
+
+.custom-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+}
+
+.floating-form-group label {
+  position: absolute;
+  left: 0.75rem;
+  top: 1rem;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  margin: 0;
+}
+
+.custom-input:focus ~ label,
+.custom-input:not(:placeholder-shown) ~ label {
+  transform: translateY(-1.4rem) scale(0.85);
+  background-color: white;
+  padding: 0 0.5rem;
+  color: #007bff;
+}
+
+/* Image Upload Styling */
+.image-upload-container {
+  background: #f8f9fa;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.upload-area {
+  padding: 2rem;
+  text-align: center;
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+  border-color: #007bff;
+  background: rgba(0, 123, 255, 0.05);
+}
+
+.upload-icon {
+  font-size: 2rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-preview {
+  padding: 1rem;
+  text-align: center;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Delete Modal */
+.delete-modal .modal-header {
+  background: #dc3545;
+}
+
+.delete-icon {
+  font-size: 3rem;
+  color: #dc3545;
+  margin-bottom: 1rem;
+}
+
+.delete-confirm-button {
+  background: #dc3545;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.delete-confirm-button:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+}
+
+/* Save Button */
+.save-button {
+  background: linear-gradient(135deg, #007bff 0%, #00bcd4 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.save-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .post-image-container {
+    height: 160px;
   }
   
-  .card:hover {
-    transform: translateY(-2px);
+  .post-title {
+    font-size: 1.1rem;
   }
   
-  .badge {
-    padding: 0.5em 0.8em;
-    font-weight: 500;
+  .custom-modal .modal-body {
+    padding: 1.5rem;
   }
   
-  .btn-sm {
-    padding: 0.25rem 0.75rem;
+  .post-actions {
+    flex-direction: column;
   }
   
-  .modal-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+  .action-button {
+    width: 100%;
   }
-  
-  .modal-footer {
-    background-color: #f8f9fa;
-    border-top: 1px solid #dee2e6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .text-muted {
-    font-size: 0.9rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .card-subtitle {
-    margin-top: 0.25rem;
-  }
-  
-  /* Animation for new/updated posts */
-  @keyframes highlight {
-    0% {
-      background-color: #fff7e6;
-    }
-    100% {
-      background-color: transparent;
-    }
-  }
-  
-  .highlight {
-    animation: highlight 2s ease-out;
-  }
-  
-  /* Image hover effect */
-  .card img {
-  }
+}
+
+.animated {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}
