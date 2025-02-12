@@ -6,6 +6,7 @@ import { faSignInAlt, faEnvelope, faLock, faEye, faEyeSlash, faUserCircle } from
 import { useNavigate } from 'react-router-dom';
 import { getDatabase, ref, get } from 'firebase/database';
 import '../Login.css';
+import { useAuth } from './AuthContext';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +38,12 @@ function Login() {
             userData.userType === userType
           ) {
             userFound = true;
-            // Redirect to post-news page after successful login
+            // Store user data in context and cookies
+            login({
+              email: userData.email,
+              userType: userData.userType,
+              userId: childSnapshot.key
+            });
             navigate('/post-news');
             return;
           }

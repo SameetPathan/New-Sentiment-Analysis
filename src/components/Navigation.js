@@ -1,61 +1,74 @@
 // components/Navigation.js
-import React, { useState } from 'react';
+import React from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faInfoCircle, faEnvelope, faUserPlus, faSignInAlt, faNewspaper, faList, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faNewspaper, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from './AuthContext';
 
 function Navigation() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // This should be managed by your authentication system
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Implement logout logic here
-    setIsLoggedIn(false);
+    logout();
     navigate('/');
   };
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow">
       <Container>
-        <Navbar.Brand as={Link} to="/" className="font-weight-bold">
-          <FontAwesomeIcon icon={faNewspaper} className="mr-2" />
+        {/* Brand on the left */}
+        <Navbar.Brand as={Link} to="/" className="me-auto">
+          <FontAwesomeIcon icon={faNewspaper} className="me-2" />
           Sentiment Analysis
         </Navbar.Brand>
+
+        {/* Toggle button for mobile */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Nav.Link as={Link} to="/" className="mx-2">
-              <FontAwesomeIcon icon={faHome} className="mr-1" /> Home
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about" className="mx-2">
-              <FontAwesomeIcon icon={faInfoCircle} className="mr-1" /> About
-            </Nav.Link>
-            <Nav.Link as={Link} to="/contact" className="mx-2">
-              <FontAwesomeIcon icon={faEnvelope} className="mr-1" /> Contact
-            </Nav.Link>
-            <Nav.Link as={Link} to="/view-news" className="mx-2">
-                  <FontAwesomeIcon icon={faList} className="mr-1" /> News List
+
+        {/* Navigation items on the right */}
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+          <Nav>
+            {!user && (
+              <>
+                <Nav.Link as={Link} to="/" className="mx-2">
+                  Home
                 </Nav.Link>
-            {isLoggedIn ? (
+                <Nav.Link as={Link} to="/about" className="mx-2">
+                  About
+                </Nav.Link>
+              </>
+            )}
+            
+            <Nav.Link as={Link} to="/view-news" className="mx-2">
+              News List
+            </Nav.Link>
+
+            {user ? (
               <>
                 <Nav.Link as={Link} to="/post-news" className="mx-2">
-                  <FontAwesomeIcon icon={faNewspaper} className="mr-1" /> Post News
+                  Post News
                 </Nav.Link>
-                <Nav.Link as={Link} to="/news-list" className="mx-2">
-                  <FontAwesomeIcon icon={faList} className="mr-1" /> News List
+                <Nav.Link as={Link} to={`/my-posts/${user.userId}`} className="mx-2">
+                  My Posts
                 </Nav.Link>
-                <Button variant="outline-light" onClick={handleLogout} className="ml-2">
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-1" /> Logout
+                {user.userType === 'admin' && (
+                  <Nav.Link as={Link} to="/all-posts" className="mx-2">
+                    All Posts
+                  </Nav.Link>
+                )}
+                <Button variant="outline-light" onClick={handleLogout} className="ms-2">
+                  <FontAwesomeIcon icon={faSignOutAlt} className="me-1" /> Logout
                 </Button>
               </>
             ) : (
               <>
                 <Nav.Link as={Link} to="/register" className="mx-2">
-                  <FontAwesomeIcon icon={faUserPlus} className="mr-1" /> Register
+                  Register
                 </Nav.Link>
                 <Nav.Link as={Link} to="/login" className="mx-2">
-                  <FontAwesomeIcon icon={faSignInAlt} className="mr-1" /> Login
+                  Login
                 </Nav.Link>
               </>
             )}
