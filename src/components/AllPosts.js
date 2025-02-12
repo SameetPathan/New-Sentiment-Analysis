@@ -1,7 +1,6 @@
-// AllPosts.js
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Spinner, Badge, Row, Col } from 'react-bootstrap';
-import { getDatabase, ref, get } from 'firebase/database';
+import { Container, Card, Spinner, Badge, Row, Col, Button, Alert } from 'react-bootstrap';
+import { getDatabase, ref, get, update } from 'firebase/database';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faCalendarAlt, 
@@ -9,11 +8,72 @@ import {
   faTag, 
   faFolder, 
   faLink,
-  faSearch
+  faSearch,
+  faBrain,
+  faChartLine,
+  faSync
 } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from './AuthContext';
 import '../AllPosts.css';
 
 function AllPosts() {
+
+  const [analyzingAll, setAnalyzingAll] = useState(false);
+  const [analyzingPost, setAnalyzingPost] = useState(null);
+  const [analysisStatus, setAnalysisStatus] = useState('');
+  const { user } = useAuth();
+
+  // Function to analyze sentiment for a single post
+  const analyzeSentiment = async (postId) => {
+    setAnalyzingPost(postId);
+    try {
+      // Here you would integrate with your sentiment analysis API
+      // For demonstration, we'll simulate an API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Update the post with sentiment analysis results
+      const db = getDatabase();
+      const postRef = ref(db, `NewsSentimentAnalysis/news/${postId}`);
+      await update(postRef, {
+        sentiment: Math.random() > 0.5 ? 'positive' : 'negative',
+        sentimentScore: (Math.random() * 100).toFixed(2),
+        analyzedAt: new Date().toISOString()
+      });
+
+      // Refresh posts to show new analysis
+      const updatedPost = posts.find(p => p.id === postId);
+      if (updatedPost) {
+        setPosts(posts.map(p => p.id === postId ? { ...p, analyzed: true } : p));
+      }
+    } catch (error) {
+      console.error('Error analyzing sentiment:', error);
+      setAnalysisStatus('Error analyzing sentiment. Please try again.');
+    } finally {
+      setAnalyzingPost(null);
+    }
+  };
+
+  // Function to analyze all posts
+  const analyzeAllPosts = async () => {
+    setAnalyzingAll(true);
+    setAnalysisStatus('Analyzing all posts...');
+    try {
+      // Analyze each post sequentially
+      for (const post of filteredPosts) {
+        if (!post.analyzed) {
+          await analyzeSentiment(post.id);
+        }
+      }
+      setAnalysisStatus('All posts have been analyzed successfully!');
+    } catch (error) {
+      console.error('Error in batch analysis:', error);
+      setAnalysisStatus('Error during batch analysis. Some posts may not have been analyzed.');
+    } finally {
+      setAnalyzingAll(false);
+      setTimeout(() => setAnalysisStatus(''), 3000);
+    }
+  };
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -73,6 +133,33 @@ function AllPosts() {
           <p className="text-center text-muted mb-5">
             Discover the latest news articles with sentiment analysis
           </p>
+
+          {user?.userType === 'admin' && (
+            <div className="admin-controls mb-4">
+              <Button 
+                variant="primary"
+                className="analyze-all-btn"
+                onClick={analyzeAllPosts}
+                disabled={analyzingAll}
+              >
+                <FontAwesomeIcon 
+                  icon={analyzingAll ? faSync : faBrain} 
+                  className={analyzingAll ? 'fa-spin me-2' : 'me-2'} 
+                />
+                {analyzingAll ? 'Analyzing All News...' : 'Analyze All News'}
+              </Button>
+              
+              {analysisStatus && (
+                <Alert 
+                  variant="info" 
+                  className="analysis-status mt-3 animated fadeIn"
+                >
+                  {analysisStatus}
+                </Alert>
+              )}
+            </div>
+          )}
+          
           
           {/* Search and Filter */}
           <Row className="justify-content-center mb-4">
@@ -171,6 +258,43 @@ function AllPosts() {
                             {tag}
                           </Badge>
                         ))}
+                      </div>
+                    )}
+                    {user?.userType === 'admin' && (
+                      <div className="sentiment-section">
+                        {post.sentiment ? (
+                          <div className={`sentiment-result ${post.sentiment.toLowerCase()}`}>
+                            <FontAwesomeIcon icon={faChartLine} className="me-2" />
+                            <span>Sentiment: {post.sentiment}</span>
+                            <span className="sentiment-score">
+                              Score: {post.sentimentScore}%
+                            </span>
+                          </div>
+                        ) : (
+                          <Button
+                            variant="outline-primary"
+                            className="analyze-btn w-100"
+                            onClick={() => analyzeSentiment(post.id)}
+                            disabled={analyzingPost === post.id}
+                          >
+                            {analyzingPost === post.id ? (
+                              <>
+                                <Spinner
+                                  as="span"
+                                  animation="border"
+                                  size="sm"
+                                  className="me-2"
+                                />
+                                Analyzing...
+                              </>
+                            ) : (
+                              <>
+                                <FontAwesomeIcon icon={faBrain} className="me-2" />
+                                Analyze Sentiment
+                              </>
+                            )}
+                          </Button>
+                        )}
                       </div>
                     )}
                   </Card.Body>
