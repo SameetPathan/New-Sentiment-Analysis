@@ -78,6 +78,7 @@ function Navigation() {
               </>
             )}
             
+            {!user &&(
             <Nav.Link 
               as={Link} 
               to="/view-news"
@@ -86,6 +87,7 @@ function Navigation() {
               <FontAwesomeIcon icon={faList} className="nav-icon" />
               &nbsp;<span>Articles</span>
             </Nav.Link>
+            )}
 
             {user ? (
               <>

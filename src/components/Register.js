@@ -95,7 +95,9 @@ function Register() {
                   <Form onSubmit={handleSubmit}>
                     <Row>
                       <Col md={6}>
+                      <label><FontAwesomeIcon icon={faUser} className="me-2" />Name</label>
                         <Form.Group className="form-floating mb-3">
+                       
                           <Form.Control
                             type="text"
                             placeholder="Name"
@@ -105,10 +107,11 @@ function Register() {
                             required
                             className="custom-input"
                           />
-                          <label><FontAwesomeIcon icon={faUser} className="me-2" />Name</label>
+                         
                         </Form.Group>
                       </Col>
                       <Col md={6}>
+                      <label><FontAwesomeIcon icon={faPhone} className="me-2" />Phone Number</label>
                         <Form.Group className="form-floating mb-3">
                           <Form.Control
                             type="tel"
@@ -119,11 +122,12 @@ function Register() {
                             required
                             className="custom-input"
                           />
-                          <label><FontAwesomeIcon icon={faPhone} className="me-2" />Phone Number</label>
+                          
                         </Form.Group>
                       </Col>
                     </Row>
 
+                    <label><FontAwesomeIcon icon={faEnvelope} className="me-2" />Email address</label>
                     <Form.Group className="form-floating mb-3">
                       <Form.Control
                         type="email"
@@ -134,11 +138,12 @@ function Register() {
                         required
                         className="custom-input"
                       />
-                      <label><FontAwesomeIcon icon={faEnvelope} className="me-2" />Email address</label>
+                      
                     </Form.Group>
 
                     <Row>
                       <Col md={6}>
+                      <label><FontAwesomeIcon icon={faLock} className="me-2" />Password</label>
                         <Form.Group className="form-floating mb-3">
                           <Form.Control
                             type="password"
@@ -149,10 +154,11 @@ function Register() {
                             required
                             className="custom-input"
                           />
-                          <label><FontAwesomeIcon icon={faLock} className="me-2" />Password</label>
+                         
                         </Form.Group>
                       </Col>
                       <Col md={6}>
+                      <label><FontAwesomeIcon icon={faLock} className="me-2" />Confirm</label>
                         <Form.Group className="form-floating mb-3">
                           <Form.Control
                             type="password"
@@ -163,13 +169,14 @@ function Register() {
                             required
                             className="custom-input"
                           />
-                          <label><FontAwesomeIcon icon={faLock} className="me-2" />Confirm</label>
+                          
                         </Form.Group>
                       </Col>
                     </Row>
 
                     <Row>
                       <Col md={formData.userType === 'admin' ? 6 : 12}>
+                      <label><FontAwesomeIcon icon={faUserShield} className="me-2" />User Type</label>
                         <Form.Group className="form-floating mb-3">
                           <Form.Select
                             name="userType"
@@ -180,12 +187,13 @@ function Register() {
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                           </Form.Select>
-                          <label><FontAwesomeIcon icon={faUserShield} className="me-2" />User Type</label>
+                         
                         </Form.Group>
                       </Col>
                       
                       {formData.userType === 'admin' && (
                         <Col md={6}>
+                        <label><FontAwesomeIcon icon={faLock} className="me-2" />Secret Key</label>
                           <Form.Group className="form-floating mb-3">
                             <Form.Control
                               type="password"
@@ -195,7 +203,7 @@ function Register() {
                               onChange={handleChange}
                               className="custom-input"
                             />
-                            <label><FontAwesomeIcon icon={faLock} className="me-2" />Secret Key</label>
+                            
                           </Form.Group>
                         </Col>
                       )}

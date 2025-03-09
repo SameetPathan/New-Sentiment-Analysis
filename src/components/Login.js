@@ -92,6 +92,10 @@ function Login() {
                     )}
 
                     <Form onSubmit={handleSubmit}>
+                    <label>
+                          <FontAwesomeIcon icon={faEnvelope} className="me-2" />
+                          Email address
+                        </label>
                       <Form.Group className="form-floating mb-3">
                         <Form.Control
                           type="email"
@@ -101,11 +105,13 @@ function Login() {
                           required
                           className="custom-input"
                         />
-                        <label>
-                          <FontAwesomeIcon icon={faEnvelope} className="me-2" />
-                          Email address
-                        </label>
+                        
                       </Form.Group>
+
+                      <label>
+                      <FontAwesomeIcon icon={faLock} className="me-2" />
+                      Password
+                    </label>
 
                       <Form.Group className="form-floating mb-3">
                         <Form.Control
@@ -116,10 +122,7 @@ function Login() {
                           required
                           className="custom-input"
                         />
-                        <label>
-                          <FontAwesomeIcon icon={faLock} className="me-2" />
-                          Password
-                        </label>
+                     
                         <Button
                           variant="link"
                           className="password-toggle"
@@ -129,6 +132,10 @@ function Login() {
                         </Button>
                       </Form.Group>
 
+                      <label>
+                      <FontAwesomeIcon icon={faUserCircle} className="me-2" />
+                      User Type
+                    </label>
                       <Form.Group className="form-floating mb-4">
                         <Form.Select
                           value={userType}
@@ -138,10 +145,7 @@ function Login() {
                           <option value="user">User</option>
                           <option value="admin">Admin</option>
                         </Form.Select>
-                        <label>
-                          <FontAwesomeIcon icon={faUserCircle} className="me-2" />
-                          User Type
-                        </label>
+                       
                       </Form.Group>
 
                       <Button

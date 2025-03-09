@@ -13,7 +13,13 @@ import {
   faNewspaper,
   faUpload,
   faImage,
-  faExclamationTriangle
+  faExclamationTriangle,
+  faPlus,
+  faEye,
+  faChartLine,
+  faSearch,
+  faFilter,
+  faStar
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from './AuthContext';
 import '../MyPosts.css';
@@ -22,6 +28,8 @@ function MyPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const { user } = useAuth();
 
   // Edit modal states
@@ -37,14 +45,15 @@ function MyPosts() {
   const [newImage, setNewImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false);
 
   // Delete modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletingPost, setDeletingPost] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   // Fetch user's posts
-// Inside MyPosts component
-useEffect(() => {
+  useEffect(() => {
     const fetchPosts = async () => {
       try {
         const db = getDatabase();
@@ -77,6 +86,17 @@ useEffect(() => {
       fetchPosts();
     }
   }, [user]);
+
+  // Filter posts based on search and category
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = post.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          post.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory ? post.category === selectedCategory : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  // Extract unique categories for filter dropdown
+  const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
   // Handle image selection
   const handleImageChange = (e) => {
@@ -115,7 +135,16 @@ useEffect(() => {
       tags: post.tags ? post.tags.join(', ') : ''
     });
     setPreviewUrl(post.imageUrl || '');
+    setNewImage(null);
+    setEditSuccess(false);
+    setError('');
     setShowEditModal(true);
+  };
+
+  // Remove image preview
+  const handleRemoveImage = () => {
+    setNewImage(null);
+    setPreviewUrl('');
   };
 
   // Handle post update
@@ -171,9 +200,13 @@ useEffect(() => {
         )
       );
 
-      setShowEditModal(false);
-      setNewImage(null);
-      setPreviewUrl('');
+      setEditSuccess(true);
+      setTimeout(() => {
+        setShowEditModal(false);
+        setNewImage(null);
+        setPreviewUrl('');
+        setEditSuccess(false);
+      }, 1500);
     } catch (error) {
       setError('Failed to update post');
       console.error(error);
@@ -184,6 +217,7 @@ useEffect(() => {
 
   // Handle post deletion
   const handleDelete = async () => {
+    setDeleting(true);
     try {
       const db = getDatabase();
       const postRef = ref(db, `NewsSentimentAnalysis/news/${deletingPost.id}`);
@@ -208,60 +242,186 @@ useEffect(() => {
     } catch (error) {
       setError('Failed to delete post');
       console.error(error);
+    } finally {
+      setDeleting(false);
     }
+  };
+
+  // Get sentiment color class
+  const getSentimentColorClass = (sentiment) => {
+    if (!sentiment) return '';
+    
+    sentiment = sentiment.toLowerCase();
+    if (sentiment.includes('very positive')) return 'sentiment-very-positive';
+    if (sentiment.includes('positive')) return 'sentiment-positive';
+    if (sentiment.includes('very negative')) return 'sentiment-very-negative';
+    if (sentiment.includes('negative')) return 'sentiment-negative';
+    return 'sentiment-neutral';
   };
 
   if (loading) {
     return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-        <Spinner animation="border" variant="primary" />
-      </Container>
+      <div className="loading-container">
+        <div className="loading-content">
+          <Spinner animation="border" variant="primary" />
+          <p>Loading your posts...</p>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="my-posts-page" style={{marginTop:"50px"}}>
-      <Container>
-       
-        
-        {error && <Alert variant="danger" className="animated fadeIn">{error}</Alert>}
-        
-        {loading ? (
-          <div className="loading-container">
-            <Spinner animation="border" variant="primary" />
-            <p>Loading your posts...</p>
+    <div className="my-posts-page mt-5">
+      <div className="page-header">
+        <Container>
+          <h1 className="text-center mb-3">My News Articles</h1>
+          <p className="text-center text-muted mb-4">
+            Manage and track your published news articles
+          </p>
+          
+          {/* Search and Filter */}
+          <div className="filters-container">
+            <Row className="justify-content-center">
+              <Col lg={6} md={6} className="mb-3">
+                <div className="search-box">
+                  <FontAwesomeIcon icon={faSearch} className="search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search your articles..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-input"
+                  />
+                </div>
+              </Col>
+              
+              <Col lg={6} md={6} className="mb-3">
+                <div className="filter-box">
+                  <FontAwesomeIcon icon={faFolder} className="filter-icon" />
+                  <select
+                    className="filter-select"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map(category => (
+                      <option key={category} value={category}>
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </Col>
+            </Row>
+            
+            <div className="filter-stats">
+              <span>Showing {filteredPosts.length} of {posts.length} articles</span>
+              
+              {(searchTerm || selectedCategory) && (
+                <Button 
+                  variant="link" 
+                  className="clear-filters"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setSelectedCategory('');
+                  }}
+                >
+                  Clear filters
+                </Button>
+              )}
+            </div>
           </div>
-        ) : posts.length === 0 ? (
+          
+          <div className="add-post-container">
+            <Button 
+              variant="primary" 
+              className="add-post-btn" 
+              href="/post-news"
+            >
+              <FontAwesomeIcon icon={faPlus} className="me-2" />
+              Create New Article
+            </Button>
+          </div>
+        </Container>
+      </div>
+        
+      <Container className="posts-container">
+        {error && (
+          <Alert variant="danger" className="animated fadeIn mb-4">
+            <FontAwesomeIcon icon={faExclamationTriangle} className="me-2" />
+            {error}
+          </Alert>
+        )}
+        
+        {filteredPosts.length === 0 ? (
           <Card className="empty-state-card">
             <Card.Body>
               <div className="empty-state">
                 <FontAwesomeIcon icon={faNewspaper} className="empty-icon" />
-                <h4>No posts yet</h4>
-                <p>You haven't created any posts yet. Start sharing news with the community!</p>
-                <Button variant="primary" href="/post-news">Create Your First Post</Button>
+                <h4>No posts found</h4>
+                {posts.length === 0 ? (
+                  <>
+                    <p>You haven't created any posts yet. Start sharing news with the community!</p>
+                    <Button variant="primary" href="/post-news" className="create-first-btn">
+                      <FontAwesomeIcon icon={faPlus} className="me-2" />
+                      Create Your First Post
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <p>No posts match your current search filters.</p>
+                    <Button 
+                      variant="primary" 
+                      onClick={() => {
+                        setSearchTerm('');
+                        setSelectedCategory('');
+                      }}
+                      className="clear-filters-btn"
+                    >
+                      <FontAwesomeIcon icon={faFilter} className="me-2" />
+                      Clear Filters
+                    </Button>
+                  </>
+                )}
               </div>
             </Card.Body>
           </Card>
         ) : (
           <Row>
-            {posts.map(post => (
+            {filteredPosts.map(post => (
               <Col md={6} lg={4} key={post.id} className="mb-4">
-                <Card className="post-card">
-                  {post.imageUrl && (
+                <Card className={`post-card ${post.sentiment ? getSentimentColorClass(post.sentiment) + '-border' : ''}`}>
+                  {post.imageUrl ? (
                     <div className="post-image-container">
                       <img src={post.imageUrl} alt={post.title} className="post-image" />
+                      <div className="image-overlay">
+                        <Badge className="category-badge">
+                          <FontAwesomeIcon icon={faFolder} className="me-1" />
+                          {post.category}
+                        </Badge>
+                      </div>
                     </div>
-                  )}
-                  <Card.Body>
-                    <div className="post-category">
+                  ) : (
+                    <div className="post-category-header">
                       <FontAwesomeIcon icon={faFolder} className="category-icon" />
                       {post.category}
                     </div>
-                    <Card.Title className="post-title">{post.title}</Card.Title>
+                  )}
+                  <Card.Body>
+                    <Card.Title className="post-title">
+                      <span>{post.title}</span>
+                      {post.sentiment && (
+                        <Badge className={`sentiment-badge m-2 ${getSentimentColorClass(post.sentiment)}`}>
+                          {post.sentiment}
+                        </Badge>
+                      )}
+                    </Card.Title>
+                    
                     <div className="post-date">
                       <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
                       {new Date(post.createdAt).toLocaleDateString()}
                     </div>
+                    
                     <Card.Text className="post-description">{post.description}</Card.Text>
                     
                     {post.source && (
@@ -276,15 +436,25 @@ useEffect(() => {
                     {post.tags && post.tags.length > 0 && (
                       <div className="post-tags">
                         <FontAwesomeIcon icon={faTags} className="tags-icon" />
-                        {post.tags.map((tag, index) => (
-                          <Badge key={index} className="tag-badge">
-                            {tag}
-                          </Badge>
-                        ))}
+                        <div className="tags-container">
+                          {post.tags.map((tag, index) => (
+                            <Badge key={index} className="tag-badge">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {post.sentimentScore && (
+                      <div className="sentiment-score m-2">
+                        <FontAwesomeIcon icon={faChartLine} className="me-2" />
+                        Sentiment score: <strong>{post.sentimentScore.toFixed(1)}%</strong>
                       </div>
                     )}
                     
                     <div className="post-actions">
+           
                       <Button 
                         variant="light"
                         className="action-button edit-button"
@@ -324,6 +494,20 @@ useEffect(() => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            {error && (
+              <Alert variant="danger" className="mb-4">
+                <FontAwesomeIcon icon={faExclamationTriangle} className="me-2" />
+                {error}
+              </Alert>
+            )}
+            
+            {editSuccess && (
+              <Alert variant="success" className="mb-4">
+                <FontAwesomeIcon icon={faStar} className="me-2" />
+                Post updated successfully!
+              </Alert>
+            )}
+            
             <Form>
               <div className="form-section">
                 <Form.Group className="floating-form-group mb-4">
@@ -404,7 +588,7 @@ useEffect(() => {
 
                 <Form.Group className="mb-4">
                   <div className="image-upload-container">
-                    <div className="upload-area">
+                    <div className={`upload-area ${previewUrl ? 'with-preview' : ''}`}>
                       <FontAwesomeIcon icon={faUpload} className="upload-icon" />
                       <Form.Control
                         type="file"
@@ -420,6 +604,14 @@ useEffect(() => {
                     {previewUrl && (
                       <div className="image-preview">
                         <img src={previewUrl} alt="Preview" />
+                        <Button 
+                          variant="danger" 
+                          size="sm" 
+                          className="remove-image-btn"
+                          onClick={handleRemoveImage}
+                        >
+                          ✕
+                        </Button>
                       </div>
                     )}
                   </div>
@@ -434,13 +626,18 @@ useEffect(() => {
             <Button 
               variant="primary" 
               onClick={handleUpdate}
-              disabled={updating}
+              disabled={updating || editSuccess}
               className="save-button"
             >
               {updating ? (
                 <>
                   <Spinner animation="border" size="sm" className="me-2" />
                   Updating...
+                </>
+              ) : editSuccess ? (
+                <>
+                  <FontAwesomeIcon icon={faStar} className="me-2" />
+                  Updated!
                 </>
               ) : (
                 'Save Changes'
@@ -465,15 +662,31 @@ useEffect(() => {
             <div className="text-center mb-4">
               <FontAwesomeIcon icon={faTrash} className="delete-icon" />
               <h4>Are you sure?</h4>
-              <p>This action cannot be undone. This will permanently delete your post.</p>
+              <p>This action cannot be undone. This will permanently delete your post:</p>
+              <p className="delete-post-title">"{deletingPost?.title}"</p>
             </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleDelete} className="delete-confirm-button">
-              Yes, Delete Post
+            <Button 
+              variant="danger" 
+              onClick={handleDelete} 
+              className="delete-confirm-button"
+              disabled={deleting}
+            >
+              {deleting ? (
+                <>
+                  <Spinner animation="border" size="sm" className="me-2" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faTrash} className="me-2" />
+                  Yes, Delete Post
+                </>
+              )}
             </Button>
           </Modal.Footer>
         </Modal>
