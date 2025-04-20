@@ -1,0 +1,106 @@
+/* AdminFeedbackDashboard.css */
+.admin-feedback-dashboard {
+    padding-top: 80px; /* Space for fixed navbar */
+  }
+  
+  /* Stats cards styling */
+  .stats-cards .stat-card {
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+    border: none;
+  }
+  
+  .stats-cards .stat-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #4a6bdf;
+    margin-bottom: 5px;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+  }
+  
+  /* Chart cards styling */
+  .chart-card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    height: 100%;
+  }
+  
+  .chart-card .card-body {
+    padding: 20px;
+  }
+  
+  /* Filter card styling */
+  .filter-card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+  }
+  
+  /* Feedback items styling */
+  .feedback-item {
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+  }
+  
+  .feedback-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .feedback-item .card-header {
+    background-color: #f8f9fa;
+    padding: 12px 20px;
+  }
+  
+  .feedback-item .card-body {
+    padding: 20px;
+  }
+  
+  .feedback-item .card-footer {
+    background-color: #f8f9fa;
+    padding: 12px 20px;
+  }
+  
+  /* Rating display styling */
+  .rating-display .fa-star {
+    font-size: 1rem;
+    margin-right: 2px;
+  }
+  
+  .rating-display .text-warning {
+    color: #ffc107 !important;
+  }
+  
+  .rating-display .text-muted {
+    color: #d1d1d1 !important;
+  }
+  
+  /* Admin response section */
+  .admin-response {
+    background-color: #f0f7ff;
+    border-left: 4px solid #4a6bdf;
+    padding: 15px;
+    border-radius: 0 5px 5px 0;
+    margin-top: 15px;
+  }
+  
+  .response-header {
+    font-weight: 600;
+    color: #4a6b;
+  }

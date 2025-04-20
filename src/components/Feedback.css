@@ -1,0 +1,82 @@
+/* Feedback.css */
+.feedback-container {
+    padding-top: 80px; /* Allow space for fixed navbar */
+  }
+  
+  .feedback-form-card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .feedback-form-card .card-header {
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  
+  .rating-container {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+  }
+  
+  .rating-star {
+    cursor: pointer;
+    font-size: 24px;
+    margin-right: 5px;
+    color: #ccc;
+    transition: all 0.2s ease;
+  }
+  
+  .rating-star:hover,
+  .rating-star.selected {
+    color: #ffc107;
+    transform: scale(1.1);
+  }
+  
+  .feedback-card {
+    transition: transform 0.2s ease;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .feedback-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
+  
+  .feedback-card .card-header {
+    padding: 12px 15px;
+    font-weight: 500;
+  }
+  
+  .feedback-text {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  .admin-feedback-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  .admin-feedback-section h3 {
+    font-weight: 600;
+    color: #495057;
+  }
+  
+  /* Add responsive adjustments */
+  @media (max-width: 768px) {
+    .feedback-container {
+      padding-top: 70px;
+    }
+    
+    .rating-star {
+      font-size: 20px;
+    }
+  }

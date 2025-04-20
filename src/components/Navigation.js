@@ -1,4 +1,4 @@
-// Navigation.js
+// Navigation.js (Updated with Admin Feedback Dashboard link)
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -11,7 +11,9 @@ import {
   faList, 
   faPlus, 
   faUser,
-  faUsers
+  faUsers,
+  faComments,
+  faChartBar
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from './AuthContext';
 import '../Navigation.css';
@@ -78,7 +80,6 @@ function Navigation() {
               </>
             )}
             
-            {!user &&(
             <Nav.Link 
               as={Link} 
               to="/view-news"
@@ -87,7 +88,16 @@ function Navigation() {
               <FontAwesomeIcon icon={faList} className="nav-icon" />
               &nbsp;<span>Articles</span>
             </Nav.Link>
-            )}
+            
+            {/* Feedback Link - Available to everyone */}
+            <Nav.Link 
+              as={Link} 
+              to="/feedback"
+              className={`nav-item ${location.pathname === '/feedback' ? 'active' : ''}`}
+            >
+              <FontAwesomeIcon icon={faComments} className="nav-icon" />
+              &nbsp;<span>Feedback</span>
+            </Nav.Link>
 
             {user ? (
               <>
@@ -110,14 +120,26 @@ function Navigation() {
                 </Nav.Link>
 
                 {user.userType === 'admin' && (
-                  <Nav.Link 
-                    as={Link} 
-                    to="/view-news"
-                    className={`nav-item ${location.pathname === '/all-posts' ? 'active' : ''}`}
-                  >
-                    <FontAwesomeIcon icon={faUsers} className="nav-icon" />
-                    &nbsp;    <span>All Posts</span>
-                  </Nav.Link>
+                  <>
+                    <Nav.Link 
+                      as={Link} 
+                      to="/view-news"
+                      className={`nav-item ${location.pathname === '/all-posts' ? 'active' : ''}`}
+                    >
+                      <FontAwesomeIcon icon={faUsers} className="nav-icon" />
+                      &nbsp;    <span>All Posts</span>
+                    </Nav.Link>
+                    
+                    {/* Admin Feedback Dashboard Link */}
+                    <Nav.Link 
+                      as={Link} 
+                      to="/admin/feedback"
+                      className={`nav-item ${location.pathname === '/admin/feedback' ? 'active' : ''}`}
+                    >
+                      <FontAwesomeIcon icon={faChartBar} className="nav-icon" />
+                      &nbsp;    <span>Feedback Dashboard</span>
+                    </Nav.Link>
+                  </>
                 )}
 
                 <Button 

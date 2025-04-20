@@ -11,6 +11,9 @@ import Login from './components/Login';
 import PostNews from './components/PostNews';
 import MyPosts from './components/MyPosts';
 import AllPosts from './components/AllPosts';
+import AdminRoute from './components/AdminRoute';
+import FeedbackComponent from './components/FeedbackComponent';
+import AdminFeedbackDashboard from './components/AdminFeedbackDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -26,7 +29,16 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/post-news" element={<PostNews />} />
           <Route path="/view-news" element={<AllPosts />} />
+          <Route path="/feedback" element={<FeedbackComponent />} />
           <Route path="/my-posts/:userId" element={<MyPosts />} />
+          <Route 
+          path="/admin/feedback" 
+          element={
+            <AdminRoute>
+              <AdminFeedbackDashboard />
+            </AdminRoute>
+          } 
+        />
         </Routes>
         <footer className="bg-dark text-light py-4">
           <Container>
